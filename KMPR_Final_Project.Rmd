@@ -1,0 +1,318 @@
+---
+title: "Data Science Final Project"
+author: "Katherine Pagán Rivera"
+date: "December 8, 2023"
+output: 
+  pdf_document:
+    latex_engine: pdflatex
+---
+
+# Abstract
+
+Oyster behavior, particularly valve gaping can be an indicative of stressful conditions. This research employs a high-frequency, non-invasive biosensor system to quantify gaping behavior, aiming to understand environmental stressors that could affect them. The data used is focuses on voltage signal movements and gaping behavior of oysters from two deployments test in Great Bay, New Hampshire. Reverse normalization, was applied into the analysis to facilitate comparison between signal and gaping. However, voltage noise, was observed, potentially impacting measurement accuracy. Farm data exhibited less relevance, emphasizing the need for further deployments to improve data accuracy. Further research aims to correlate environmental parameters with oyster behavior to address data collection challenges for better accuracy.
+
+# Introducction
+
+Estuarine systems exhibit high sensitivity to both natural and human-induced disturbances because of the intricate interplay between riverine and marine environments. Excess of nutrients and organic matter has been shown during hydrologic perturbations such as large storm events, floods, and droughts, causing increments in nutrient loading and productivity in estuaries (Paerl et al., 2006). Today, 65% of estuaries and coastal waters in the USA are moderately to severely degraded by excessive nutrient inputs (NOAA, 2023).Filter-feeder organisms are key to maintaining many coastal ecosystems biodiversity and good water quality. Oysters are reef-forming organisms that increase the topographical complexity and create habitats for many other species in the ecosystem (Coen et al., 1999). Additionally, as filter-feeders, they have the ability to improve water quality along estuaries (Cerco & Noel, 2007; Kreeger et al., 2018). 
+  
+Oysters are considered a valuable resource with both economic and cultural significance for people worldwide (Reeder-Myers et al., 2022). In New England, shellfish production has been estimated between forty-five million and fifty million dollars, with oysters being the most valuable species (Scuderi & Chen, 2019), particularly in Maine, where around $10 million has been from oysters (NH Sea Grant). Nonetheless, oyster populations have experienced a drastic decline due to different factors such as climate change, disease, pollutants, and overharvesting (Grizzle & Ward, 2016; Jaris et al., 2019; Larsen et al., 2013). As a result, the development of new culture techniques, in-situ parameter monitoring, and the restoration of wild oyster populations have long been areas of cooperation in New Hampshire between oyster farmers and institutions such as the University of New Hampshire, Sea Grant, and the New Hampshire Agricultural Experimental Station. Such techniques have made coastal managers and growers rely on environmental data to establish aquaculture siting, farming techniques, and management regulations since effective oyster culture depends on appropriate location and monitoring of fluctuating coastal conditions (Snyder et al., 2017). 
+ 
+Oyster's behavior relies on the use of valve gaping for eating, respiration, spawning, winter torpor, and moisture retention during emersion (Clements et al., 2018). Since this behavior is used for survival activity, valve closure can be an indicator of stressful conditions. Previous studies on bivalves have associated valve opening with environmental stresses, such as pollution, thermal challenge, hypoxia, and toxic algae (Porter & Breitburg, 2016).  However, the effects of environmental stress on the behavior and health status of oysters have not been well studied. In this study we aims to increase our understanding on carryover effects on behavioral and health responses by quantifying the gaping behavior with the use of high-frequency, non-invasive biosensor system. Data used come from two deployment test made at Great Bay, New Hampshire to assure the feasibility of equipment. 
+  
+### Further Research Goals
+ 
+When inorganic nutrients are pulsed in a nitrogen-limited environment, toxic algal blooms can occur. As these primary producers aerobically respire, a bloom may result in lower dissolved oxygen (DO) levels in the water, which will lead to hypoxia (Vitousek et al., 1997). Also, a second consequence of the same respiratory processes is the production of carbon dioxide (CO2) in the water. When CO2 enters the water form, carbonic acid (H2C03) dissociates into bicarbonate ions (HCO), carbonate ions (CO2), and hydrogen ions (+H). This reaction causes low pH levels that lead to ocean acidification (Wallace et al., 2014) . Even though hypoxic and acidification events can occur as separate events, there is a relation shown when an overload of nutrients occurs. 
+  
+Larvae and juvenile oyster stages are more sensitive to environmental stressors than adult oysters. When physiological stressors occur, oysters have an elevated metabolic demand that affects gaping behavior and reduces feeding rates. Pruett (2022) found that settlement is reduced when juvenile oysters are exposed to stressors. During hypoxia and acidification, stressed larvae increase metabolic rates, which increases oxygen consumption. In turn, the increased energetic demands may lead to lower growth rates as post-settlement juveniles. This environmental stresses can also affect oyster survival (Pruett et al., 2021). Moreover, future investigations are needed to consider direct and indirect stressor effects on oyster's early-stage behavior and physiology. From the equipment used in this project I aim to increase our understanding the carryover effects on behavioral and health responses towards acidification and hypoxia exposure in oyster early life stages.
+
+# Methods 
+
+The innovative system used for this project measures oyster gaping activity as a direct indicator of behavior and stress. High-frequency, non-invasive (HFNI) biosensors use living organisms to survey water quality parameters by attaching sensors and continuously monitoring biological activity. HFNI also detects the gap distance between living bivalve shells without interfering with their normal activities. The mechanism operates with a sensor and a magnet attached to each valve of the oyster and connected to the Arduino (single-board microcontroller) that detects the distance between itself and the magnet and sends this in the form of voltage data. 
+
+To assure feasibility of the equipment and quantifying the oyster gaping behavior in there natural enviroment, two run test have been made in Great Bay National Estuarine Reserve (Figure 1). For this we use a fully remote, and autonomous system called phone clam. This system relay on LoRa (physical proprietary radio communication technique) modules were each Arduino will allow the microcontrollers to communicate with one another. Then, a receiver on land will be connected to a computer workstation, and scheduled data packets will be sent from the remote buoy to that receiver on land. Data from this computer can be stored for later analysis. 
+ 
+### Adhering oysters to the system
+
+To adhering oysters to the system oysters is essential to ensuring the oysters were thoroughly dry. Subsequently, sandpaper was used to prepare the shells for attachment. Subsequently,a sensor was glued to the top shell, and a magnet was directly beneath the sensor on the bottom shell. This process was repeated for every sensor and corresponding oyster in the experiment.
+
+### Setting equipment
+
+To assemble the system, the switches on both the transmitter and receiver must be configured by having the transmitter top switch turned off, and the side switch on. For the receiver the left switch off and the right switch on. Powering the system involves connecting the transmitter to a solar panel and the receiver to either a computer or a wall outlet.
+
+### Data Analyzes
+ 
+Data analyze use a series of generalized linear models with gaping behavior measured as the proportion of time open. 
+
+# Results
+
+## Data Cleaning
+
+In order to prepare the data for the construction of understandable plots, a set of operations had to be completed in the first phase of this project. The data cleaning code is included in the R Markdown file and can be found in the project's repository (https://github.com/KathM01/BIOL806_Final_Project.git). 
+
+## Deployments
+
+```{r, include=FALSE}
+library("ggplot2")
+library("tidyverse")
+library("dplyr")
+library("lubridate")
+library("pacman")
+library("pracma")
+library("leaflet")
+library("knitr")
+```
+
+
+```{r, echo=FALSE, fig.cap="Map showing deployments locations. First location at Jacksons Estuarine Laboratories (-70.8500306 lng, 43.1286333 lat), second location at an oyster farm (-70.8500306 lng, 43.1286333 lat)", fig.width=6, fig.height=4}
+leaflet() %>% 
+  addTiles() %>%
+  addMarkers(lng = -70.8642639, lat =  43.0920694, popup = 'JEL') %>%
+  addMarkers(lng = -70.8500306, lat = 43.1286333, popup = 'Oyster Farm')
+```
+
+\pagebreak
+
+### Jackson Estuarine Laboratory 
+
+```{r, include=FALSE}
+JEL<-read.csv("Section_JEL_Deployment.csv", header=TRUE)
+head(JEL)
+```
+
+```{r, echo=FALSE, fig.cap="Raw data. Show oyster's 2, 3 and 5 voltage signal movement for 2.5h at Jackson Estuarine Laboratories."}
+ggplot(JEL, aes(x = Seconds)) +
+  geom_line(aes(y = Oyster.2, color = "Oyster.2")) +
+  geom_line(aes(y = Oyster.3, color = "Oyster.3")) +
+  geom_line(aes(y = Oyster.5, color = "Oyster.5")) +
+  theme_bw() + theme(
+    legend.position = "right",
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()) +
+  theme(legend.position = "right", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  xlab("Seconds") +
+  ylab("Gaping")
+```
+```{r, include=FALSE}
+reverse_normalize <- function(X) {
+  oys <- ifelse(X < 500 | X > 560, NA, X)
+  (oys - max(oys, na.rm = TRUE)) / (min(oys, na.rm = TRUE) - max(oys, na.rm = TRUE))
+}
+
+oysters <- grep('^Oyst', colnames(JEL), value = TRUE)
+
+d1 <- apply(JEL[, oysters], 2, reverse_normalize)
+
+d1 <- data.frame(d1)
+
+colnames(d1) <- paste(oysters, 'gape', sep = "_")
+
+JEL <- data.frame(cbind(seconds = JEL$Seconds), d1)
+
+head(JEL)
+str(JEL)
+
+JEL_long<- gather(JEL, oyster_identity, gaping, Oyster.2_gape, Oyster.3_gape, Oyster.5_gape, factor_key=TRUE)
+
+```
+
+```{r, echo=FALSE, fig.cap="Show oyster's 2, 3, and 5 gaping movements after normalizing values to 1 and 0 for open and close, respectively."}
+JEL_long %>% 
+  ggplot(aes(x=seconds, y=as.numeric(gaping)))+ geom_line()+ theme_bw() + theme(legend.position="right") + theme( panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + xlab("Seconds")+ ylab("Gaping") + theme_minimal() + facet_wrap(~oyster_identity)
+```
+
+\pagebreak
+
+```{r, echo=FALSE, fig.cap="Boxplot that shows min and max values of open and closed activity with error bar."}
+ggplot(JEL_long, aes(x = oyster_identity, y = gaping)) +
+  geom_boxplot(fill = "lightblue", color = "blue", coef = 0) +
+  geom_errorbar(
+    aes(ymin = min(gaping), ymax = max(gaping)),
+    width = 0.2,
+    position = position_dodge(0.7)
+  ) +
+  labs(
+    x = "Oyster",
+    y = "Gape"
+  ) +
+  theme_minimal()
+```
+
+\pagebreak
+
+```{r, include=FALSE}
+percentage <- JEL_long %>%
+  group_by(oyster_identity) %>%
+  summarize(Percentage_of_Time_Spent_Open= sum(gaping > 0.25, na.rm = TRUE) / n()) %>%
+  mutate(Percentage_of_Time_Spent_Open= Percentage_of_Time_Spent_Open* 100)
+head(percentage)
+percentage$oyster_identity <- as.factor(percentage$oyster_identity)
+levels(percentage$oyster_identity)
+```
+
+```{r, echo=FALSE}
+kable(percentage, caption = "Percentage of time spent open for oyster 2, 3 and 5")
+```
+
+```{r, include=FALSE}
+percentage <- JEL_long %>%
+  group_by(oyster_identity) %>%
+  summarize(Percentage_of_Time_Spent_Close= sum(gaping < 0.25, na.rm = TRUE) / n()) %>%
+  mutate(Percentage_of_Time_Spent_Close= Percentage_of_Time_Spent_Close* 100)
+head(percentage)
+percentage$oyster_identity <- as.factor(percentage$oyster_identity)
+levels(percentage$oyster_identity)
+```
+
+```{r, echo=FALSE}
+kable(percentage, caption = "Percentage of time spent close for oyster 2, 3 and 5")
+```
+
+Figures 2 and 3 present the activity patterns associated with the opening and closing of the valve in oysters 2, 3, and 5. Data recording from sensors 1, 4, and 6 was unavailable as these sensors had to be replaced. In Figure 2, different voltage levels are shown, illustrating fluctuations between 530 and 560 volts for all three oysters. Notably, oyster 2 exhibited the lowest voltages, while Oyster 3 displayed the highest. In order to know whether these voltage values represent the degree of opening or closing of the oyster, it was necessary to determine the maximum and minimum values according to the voltage peaks. This evaluation considers the normalization technique, commonly used to scale numerical data within a common range, typically between 0 and 1. This facilitates the comparison of variables with differing scales or units. Nevertheless, the data from the equipment underwent conversion from normalized values back to its original scale. The reversal of the normalization process was applied to the set of oyster data columns, restoring them to their original scale for visualization in Figure 3. The binary representation was employed, indicating a value of 1 as open oyster shell and 0 as complete closure. Figure 4 illustrates the frequency of open and close peaks for each oyster with a high variability due to error bars. Overall, oysters at JEL exhibited a longer duration of openness compared to closure, with more than 50 percent open for all three oysters (Table 1 and 2).
+
+\pagebreak
+
+### Farm Deployment
+
+```{r, include=FALSE}
+FARM <- read.csv("Section_Farm_Deployment.csv", header=TRUE)
+head(FARM)
+```
+
+```{r, echo=FALSE, fig.cap="Raw data. Show oyster's 1 to 6 voltage signal movement for 2.5h at Oyster Farm."}
+ggplot(FARM, aes(x = Seconds)) +
+  geom_line(aes(y = Oyster.1, color = "Oyster.1")) +
+  geom_line(aes(y = Oyster.2, color = "Oyster.2")) +
+  geom_line(aes(y = Oyster.3, color = "Oyster.3")) +
+  geom_line(aes(y = Oyster.4, color = "Oyster.4")) +
+  geom_line(aes(y = Oyster.5, color = "Oyster.5")) +
+  geom_line(aes(y = Oyster.6, color = "Oyster.6")) +
+  theme_bw() +
+  theme(legend.position = "right", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  xlab("Seconds") +
+  ylab("Gaping")
+```
+
+\pagebreak
+
+```{r, include=FALSE}
+reverse_normalize <- function(X) {
+  oys <- X[!is.na(X)]
+  if (length(oys) == 0) {
+    return(rep(NA, length(X)))
+  }
+  (oys - max(oys, na.rm = TRUE)) / (min(oys, na.rm = TRUE) - max(oys, na.rm = TRUE))
+}
+
+selected_oysters <- c("Oyster.1", "Oyster.3", "Oyster.4", "Oyster.5", "Oyster.6")
+
+d1 <- apply(FARM[selected_oysters], 2, reverse_normalize)
+
+d1 <- data.frame(d1)
+
+colnames(d1) <- paste(selected_oysters, 'gape', sep = "_")
+
+FARM <- data.frame(seconds = FARM$Seconds, d1)
+
+
+head(FARM)
+str(FARM)
+
+FARM_long <- gather(FARM, oyster_identity, gaping, starts_with("Oyster."), factor_key = TRUE)
+
+```
+
+```{r, echo=FALSE, fig.cap="Show oyster's 1, 3, 4, 5 and 6 gaping movements after normalizing values to 1 and 0 for open and close, respectively."}
+FARM_long %>% 
+  ggplot(aes(x=seconds, y=as.numeric(gaping)))+ geom_line()+ theme_bw() + theme(legend.position="right") + theme( panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + xlab("Seconds")+ ylab("Gaping") + theme_minimal() + facet_wrap(~oyster_identity)
+```
+
+\pagebreak
+
+```{r, echo=FALSE, fig.cap="Boxplot that shows min and max values of open and closed activity with error bar."}
+ggplot(FARM_long, aes(x = oyster_identity, y = gaping)) +
+  geom_boxplot(fill = "lightblue", color = "blue", coef = 0) +
+  geom_errorbar(
+    aes(ymin = min(gaping), ymax = max(gaping)),
+    width = 0.2,
+    position = position_dodge(0.7)
+  ) +
+  labs(
+    x = "Oyster",
+    y = "Gape"
+  ) +
+  theme_minimal()
+```
+
+\pagebreak
+
+```{r, include=FALSE}
+percentage <- FARM_long %>%
+  group_by(oyster_identity) %>%
+  summarize(Percentage_of_Time_Spent_Open= sum(gaping > 0.25, na.rm = TRUE) / n()) %>%
+  mutate(Percentage_of_Time_Spent_Open= Percentage_of_Time_Spent_Open* 100)
+head(percentage)
+percentage$oyster_identity <- as.factor(percentage$oyster_identity)
+levels(percentage$oyster_identity)
+```
+
+```{r, echo=FALSE}
+kable(percentage, caption = "Percentage of time spent open for oyster 1, 3, 4, 5 and 6")
+```
+
+```{r, include=FALSE}
+percentage <- FARM_long %>%
+  group_by(oyster_identity) %>%
+  summarize(Percentage_of_Time_Spent_Close= sum(gaping < 0.25, na.rm = TRUE) / n()) %>%
+  mutate(Percentage_of_Time_Spent_Close= Percentage_of_Time_Spent_Close* 100)
+head(percentage)
+percentage$oyster_identity <- as.factor(percentage$oyster_identity)
+levels(percentage$oyster_identity)
+```
+
+```{r, echo=FALSE}
+kable(percentage, caption = "Percentage of time spent close for oyster 1, 3, 4, 5 and 6")
+```
+
+Figures 5 present the voltage activity patterns observed in oysters 1 to 6 in the oyster farm. The oscillations for most oysters range between 550 and 650 volts, except for oyster 2, which exhibits oscillations around 200 volts. Due to this low voltage, Oyster 2 was excluded from the sample due to a likely issue with the sensor connection. Upon reversing the normalization process, the data displayed significant variability, with only oyster 3 demonstrating a normal movement pattern followed by some voltage noise (Figure 6). In contrast, oysters 1, 4, 5, and 6 did not exhibit a noticeable number of peaks after the reverse normalization process, as illustrated in Figure 7.After analyzing the opening and closing percentages reveals that oysters 1, 3, and 4 displayed more than 50 percent openness, with Oyster 4 reaching the 99 percent of openness. In contrast, oysters 5 and 6 exhibited less than 30 percent openness (Table 1 and 2).
+
+\pagebreak
+
+# Discussion
+
+The graphical representation illustrates the movement of the oysters in terms of f their degree of openness and closure. However, it is important to note that there is an amount of noise in the measurements. Voltage noise is considered a random fluctuation in the voltage of a signal. It is often caused by a variety of factors, including electronic components, environmental conditions, and a characteristics of the sensor itself. To determine the cause of this voltage noises, further research is needed, requiring additional implementation. The existence of voltage noise can have a significant impact on the accuracy of sensor measurements. Overall, the deployment at JEL proved to be more successful than the farm. Data collected on the farm appeared to be less relevant in determining oyster behavior, suggesting low data accuracy.
+
+Although the data did not meet the expected level of accuracy, this study shows the potential to quantify oyster opening and closing behavior using HFNI biosensors device. However, improvements are needed to collect more specific data. For example, the system is configured to collect data every 12 seconds, but the timing of these measurements (day or night) remains uncertain. Additionally, the system constantly restarts and messurments restart to collect data, possibly due to direct solar power use without an source. The power source and the incorrect adhesion of the sensor to the oyster  and to the magnet may have contributed to the observed voltage noise. These issues should be addressed and  more implementation activities should be done to relate oyster behavior to environmental parameters. Additionally, more analyzes incorporating environmental parameters (e.g., weather, water quality) are needed to understand the reasons for oyster behavior and evaluate instrument feasibility. This approach is crucial to improve methodology and ensure the validity of results.
+
+# References
+
+Cerco, C. F., & Noel, M. R. (2007). Can oyster restoration reverse cultural eutrophication in Chesapeake Bay? Estuaries and Coasts, 30(2), 331–343.        https://doi.org/10.1007/BF02700175
+
+Clements, J. C., Comeau, L. A., Carver, C. E., Mayrand, É., Plante, S., & Mallet, A. L. (2018). Short-term exposure to elevated pCO2 does not affect       the valve gaping response of adult eastern oysters, Crassostrea virginica, to acute heat shock under an ad libitum feeding regime. Journal of          Experimental Marine Biology and Ecology, 506, 9.
+
+Coen, L.D., Luckenbach, M.W., & Breitburg, D. (1999). The role of oyster reefs as essential fish habitat: a review of current knowledge and some new       perspectives.
+
+Grizzle, R. E., & Ward, K. M. (n.d.). Assessment of recent eastern oyster (Crassostrea virginica) reef restoration projects in the Great Bay Estuary,      New Hampshire: Planning for the future.
+
+Jaris, H., Brown, D. S., & Proestou, D. A. (2019). Assessing the contribution of aquaculture and restoration to wild oyster populations in a Rhode         Island coastal lagoon. Conservation Genetics, 20(3), 503–516. https://doi.org/10.1007/s10592-019-01153-9
+
+Kreeger, D. A., Gatenby, C. M., & Bergstrom, P. W. (2018). Restoration Potential of Several Native Species of Bivalve Molluscs for Water Quality           Improvement in Mid-Atlantic Watersheds. Journal of Shellfish Research, 37(5), 1121–1157. https://doi.org/10.2983/035.037.0524
+
+Larsen, P. F., Wilson, K. A., & Morse, D. (2013). Observations on the Expansion of a Relict Population of Eastern Oysters (Crassostrea virginica) in a     Maine Estuary: Implications for Climate Change and Restoration. Northeastern Naturalist, 20(4). https://doi.org/10.1656/045.020.0414
+
+Paerl, H. W., Valdes, L. M., Peierls, B. L., Adolf, J. E., & Harding, L. Jr. W. (2006). Anthropogenic and climatic influences on the eutrophication of     large estuarine ecosystems. Limnology and Oceanography, 51(1part2), 448–462. https://doi.org/10.4319/lo.2006.51.1_part_2.0448
+
+Porter, E. T., & Breitburg, D. L. (2016). Eastern oyster, Crassostrea virginica, valve gape behavior under diel-cycling hypoxia. Marine Biology,           163(10), 218. https://doi.org/10.1007/s00227-016-2980-1
+
+Pruett, J. L., Pandelides, A. F., Keylon, J., Willett, K. L., Showalter Otts, S., & Gochfeld, D. J. (2022). Life-stage-dependent effects of multiple       flood-associated stressors on a coastal foundational species. Ecosphere, 13(12), e4343. https://doi.org/10.1002/ecs2.4343
+
+Pruett, J. L., Pandelides, A. F., Willett, K. L., & Gochfeld, D. J. (2021). Effects of flood- associated stressors on growth and survival of early life     stage oysters (Crassostrea virginica). Journal of Experimental Marine Biology and Ecology, 544, 151615. https://doi.org/10.1016/j.jembe.2021.151615
+
+Reeder-Myers, L., Braje, T. J., Hofman, C. A., Elliott Smith, E. A., Garland, C. J., Grone, M., Hadden, C. S., Hatch, M., Hunt, T., Kelley, A.,            LeFebvre, M. J., Lockman, M., McKechnie, I., McNiven, I. J., Newsom, B., Pluckhahn, T., Sanchez, G., Schwadron, M., Smith, K. Y., ... Rick, T. C.      (2022). Indigenous oyster fisheries persisted for millennia and should inform future management. Nature Communications, 13(1), 2383.                    https://doi.org/10.1038/s41467-022-29818-z
+
+Scuderi, B., & Chen, X. (2019). Production efficiency in New England’s oyster aquaculture industry. Aquaculture Economics & Management, 23(1), 45–64.       https://doi.org/10.1080/13657305.2018.1449272
+
+Snyder, J., Boss, E., Weatherbee, R., Thomas, A. C., Brady, D., & Newell, C. (2017). Oyster Aquaculture Site Selection Using Landsat 8-Derived Sea          Surface Temperature, Turbidity, and Chlorophyll a. Frontiers in Marine Science, 4. https://www.frontiersin.org/articles/10.3389/fmars.2017.00190
+
+Vitousek, P. M., Aber, J. D., Howarth, R. W., Likens, G. E., Matson, P. A., Schindler, D. W., Schlesinger, W. H., & Tilman, D. G. (1997). Human             Alteration of the Global Nitrogen Cycle: Sources and Consequences. Ecological Applications, 7(3), 737–750.                                             https://doi.org/10.1890/1051-0761(1997)007[0737:HAOTGN]2.0.CO;2
+
+Wallace, R. B., Baumann, H., Grear, J. S., Aller, R. C., & Gobler, C. J. (2014). Coastal ocean acidification: The other eutrophication problem.             Estuarine, Coastal and Shelf Science, 148, 1–13. https://doi.org/10.1016/j.ecss.2014.05.027
